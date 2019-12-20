@@ -1,0 +1,50 @@
+/* Colors
+============================*/
+
+.brand-color{
+    color: #176637!important;
+}
+
+.main-border{
+    border-top: 2px solid #176637 !important;
+}
+
+.dir-rtl{
+    direction:rtl
+}
+
+
+.opacity-50 {
+    opacity: 0.5; 
+}
+
+label
+{
+    font-weight: bold;
+}
+
+.required
+{
+    color: red;
+}
+
+
+/*======== fess pay invoice CSS ========*/
+
+.table_cash {
+    font-size: 15px;
+    border-collapse: collapse;
+    width: 100%;
+    height: 100px;
+}
+
+td {
+    height: 50px;
+}
+
+.cash_container {
+    padding: 100px 100px 100px 100px;
+}
+
+
+/*======== end of fess pay invoice CSS ========*/
