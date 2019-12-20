@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Service;
 use DB;
+use Response;
 
 class ServiceController extends Controller
 {
@@ -16,7 +16,7 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::all();
-        $services_off = DB::table('services')->whereNotNull('deleted_at')->get();
+        $services_off = Service::onlyTrashed()->get();
         return view('services.index')->with('services', $services)
         ->with('services_off', $services_off);
     }
@@ -47,7 +47,7 @@ class ServiceController extends Controller
             
         ]);
 
-        return redirect()->route('service_create')->with('success', 'تم إضافة الخدمة قد يوثر هذا علي عمليات البحث و التقارير.');
+        return redirect()->route('service_create')->with('success', 'تم إضافة الخدمة نجاح.');
     }
 
     /**
@@ -56,9 +56,9 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+
     }
 
     /**
@@ -103,7 +103,7 @@ class ServiceController extends Controller
         $service = Service::find($id);
         $service->delete();
 
-        return redirect()->route('service_show')->with('delete', 'تم مسح بيانات الخدمة.');
+        return redirect()->route('service_show')->with('delete', 'تم إيقاف بيانات الخدمة قد يوثر هذا علي عمليات البحث و التقارير.');
     }
 
 
@@ -117,6 +117,30 @@ class ServiceController extends Controller
     {
         $service = Service::withTrashed()->where('id', $id)->first();
         $service->restore();
-        return redirect()->route('service_show')->with('success', 'تم تشغيل بيانات الخدمة.');
+        return redirect()->route('service_show')->with('success', 'تم تشغيل بيانات الخدمة قد  يؤثر هذا علي عمليات البحث و التقارير.');
     }
+
+
+
+
+    
+
+        /*
+        * API ROUTE  
+        ***********************
+        Here you find the customize route for the api routes.
+        */
+        
+        # API ROUTE RETRIVE SERRVICE 
+        public function fetch_services(){
+        
+            $services = Service::all();
+
+            if(is_null($services)){
+                return $this->sendError('services not found !');
+            }
+            return response()->json($services);
+    
+        }
+
 }

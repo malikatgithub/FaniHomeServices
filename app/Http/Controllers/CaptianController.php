@@ -1,12 +1,18 @@
 <?php
-
 namespace App\Http\Controllers;
-
+use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Validator;
+use Response;
+use JWTFactory;
+use JWTAuth;
 use App\Captain;
 use App\Service;
+use App\States;
+use App\District;
 
-class CaptianController extends Controller
+class CaptianController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +33,9 @@ class CaptianController extends Controller
     public function create()
     {
         $services = Service::all();
-        return view('captains.create')->with('services', $services);
+        $states = States::all();
+        $districts = District::all();
+        return view('captains.create')->with('services', $services)->with('states', $states)->with('districts', $districts);
     }
 
     /**
@@ -38,6 +46,25 @@ class CaptianController extends Controller
      */
     public function store(Request $request)
     {
+
+        $this->validate($request, [
+            'name'=> 'required',
+            'bod'=> 'required',
+            'relegion'=> 'required',
+            'gender'=> 'required',
+            'nationality'=> 'required',
+            'id_num'=>'min:16',
+            'phone'=> 'required',
+            'password'=> 'required',
+            'address'=> 'required',
+            'edu_level'=> 'required',
+            'service_id'=> 'required',
+            'state_id'=> 'required',
+            'district_id'=> 'required',
+            'password' => 'min:6|required_with:password_conf|same:password_conf',
+            'password_conf' => 'min:6'
+            ]);
+
         
         if ($request->hasFile('pic')) {
             $pic = $request->pic;
@@ -65,17 +92,18 @@ class CaptianController extends Controller
             'relegion'=> $request->relegion,
             'gender'=> $request->gender,
             'nationality'=> $request->nationality,
+            'id_num'=> $request->id_num,
             'phone'=> $request->phone,
             'phone2'=> $request->phone2,
+            'password' => Hash::make($request['password']),
             'address'=> $request->address,
             'edu_level'=> $request->edu_level,
             'service_id'=> $request->service_id,
+            'state_id'=> $request->state_id,
+            'district_id'=> $request->district_id,
             'note'=> $request->note,
-            'pic'=> $pic_new_name,
- 
-            
+            'pic'=> $pic_new_name, 
         ]);
-
         return redirect()->route('captain_create')->with('success', 'تم إضافة الكابتن.');
     }
 
@@ -138,10 +166,13 @@ class CaptianController extends Controller
         $captain->nationality = $request->nationality;
         $captain->phone = $request->phone;
         $captain->phone2 = $request->phone2;
+        $captain->password = $request->password;
         $captain->address = $request->address;
 
         $captain->edu_level = $request->edu_level;
         $captain->service_id = $request->service_id;
+        $captain->state_id = $request->state_id;
+        $captain->district_id = $request->district_id;
         $captain->note = $request->note;
    
         $captain->save();
@@ -173,4 +204,9 @@ class CaptianController extends Controller
 
         return redirect()->route('captains_show_page')->with('delete', 'تم مسح بيانات الكابتن.');
     }
+
+
+
+
+
 }

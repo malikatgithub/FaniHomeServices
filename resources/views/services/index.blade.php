@@ -132,7 +132,7 @@
                                                             $x=0;
                                                     @endphp
 
-                                                @if (! empty($services))
+                                                @if (empty($services_off))
 
                                                 <td colspan="5" class="text-center font-weight-bold text-danger">- لاتوجد خدمات موقوفة - </td>
 

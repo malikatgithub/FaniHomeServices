@@ -52,7 +52,9 @@
                                                 <h6 class="card-title">إضافة و تعديل و حذف بيانات الخدمات المقدمة</h6>
                                                 <p class="card-text">
                                                     <a href="{{ route('service_create') }}" class="btn btn-success text-white"><i class="fa fa-plus-square"></i> إضافة</a> 
-                                                    <a href="{{ route('service_show') }}" class="btn btn-primary text-white"><i class="fa fa-eye"></i> عرض الخدامات</a>    
+                                                    <a href="{{ route('service_show') }}" class="btn btn-primary text-white"><i class="fa fa-eye"></i> عرض الخدامات</a> 
+                                                    <a href="{{ route('states') }}" class="btn btn-dark text-white"><i class="fa fa-map-marker-alt"></i> المناطق </a>    
+   
                                                 </p>
                                             </div>
                                         </div>
@@ -102,7 +104,7 @@
                                                 <p class="card-text">
                                                     <a href="{{ route('captains_report') }}" class="btn btn-success text-white"><i class="fa fa-file-alt"></i> تقارير الكابتن</a> 
                                                     {{--  <a href="{{ route('service_show') }}" class="btn btn-primary text-white"><i class="fa fa-file-alt"></i> تقارير الخدمات </a>      --}}
-                                                    <a href="{{ route('balances_report') }}" class="btn btn-secondary text-white"><i class="fa fa-file-invoice-dollar"></i> التقارير المالية </a>    
+                                                    <a href="{{ route('balances_report') }}" class="btn btn-dark text-white"><i class="fa fa-file-invoice-dollar"></i> التقارير المالية </a>    
                                                 </p>
                                             </div>
                                         </div>

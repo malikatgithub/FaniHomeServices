@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -38,14 +38,17 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'captains',
         ],
 
         'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
+            'driver' => 'jwt',
+            'provider' => 'captains',
             'hash' => false,
         ],
+
+
+        
     ],
 
     /*
@@ -70,6 +73,13 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
+
+        'captains' => [
+            'driver' => 'eloquent',
+            'model' => App\Captain::class,
+        ],
+
+
 
         // 'users' => [
         //     'driver' => 'database',
@@ -98,6 +108,13 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
+        ],
+
+
+        'captains' => [
+            'provider' => 'captains',
+            'table' => 'password_resets',
+            'expire' => 60,
         ],
     ],
 

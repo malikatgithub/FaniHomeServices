@@ -16,6 +16,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::match(['get', 'post'], 'register', function(){
+    return redirect('/');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -39,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
     /*==== End Ajax Search Engine ====*/
 
 
-     /* Services Routes
+    /* Services Routes
     ============================*/
     
     Route::get('/service_service', 'ServiceController@create')->name('service_create');
@@ -49,6 +52,26 @@ Route::middleware(['auth'])->group(function () {
     Route::post('service_update/{id}', 'ServiceController@update')->name('service_update');
     Route::get('service_delete/{id}', 'ServiceController@destroy')->name('service_delete');
     Route::get('/service_restart/{id}', 'ServiceController@restart')->name('service_restart');
+
+
+    /* States Routes
+    ============================*/
+    
+    Route::get('/states', 'StatesController@index')->name('states');
+    Route::get('/state_create', 'StatesController@create')->name('state_create');
+    Route::POST('/state_store', 'StatesController@store')->name('state_store');
+    Route::get('/state_edit/{id}', 'StatesController@edit')->name('state_edit');
+    Route::post('/state_update/{id}', 'StatesController@update')->name('state_update');
+    Route::get('/state_delete/{id}', 'StatesController@destroy')->name('state_delete');
+    Route::get('/state_restart/{id}', 'StatesController@restart')->name('state_restart');
+
+
+
+    /* States Routes
+    ============================*/
+    Route::POST('/district_store', 'DistrictsController@store')->name('district_store');
+    Route::get('/district_edit/{id}', 'DistrictsController@edit')->name('district_edit');
+    Route::post('/district_update/{id}', 'DistrictsController@update')->name('district_update');
 
 
     /* balance Routes

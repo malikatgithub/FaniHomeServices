@@ -16,6 +16,17 @@
                         <div class="container">
 
                                 
+
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                <ul>
+                                        @foreach ($errors->all() as $error)
+                                        <li class="text-left">{{ $error }}</li>
+                                        @endforeach
+                                </ul>
+                                </div>
+                                @endif
+
                                 {{--
                                 Start of the session status --}}
 
@@ -118,13 +129,68 @@
                                             </select>
                                         </div>
 
+
+                                        <div class="col-md-6 mb-3">
+                                                <label for="validationDefault01">رقم إثبات الهوية <span class="required">*</span></label>
+                                                <input type="number" class="form-control" id="validationDefault01" placeholder="" value="" required name="id_num">
+                                                
+                                        </div>
+
+
+                                        <div class="col-md-6 mb-3">
+                                                <label for="validationDefault01"> كلمة المرور <span class="required">*</span></label>
+                                                <input type="text" class="form-control border-danger" id="validationDefault01" placeholder="" value="" required name="password">
+                                                
+                                        </div>
+
+
+                                        <div class="col-md-6 mb-3">
+                                                <label for="validationDefault01"> تأكيد كلمة المرور <span class="required">*</span></label>
+                                                <input type="text" class="form-control border-danger" id="validationDefault01" placeholder="" value="" required name="password_conf">
+                                                
+                                        </div>
+
+
                                         <div class="col-md-3 mb-3">
-                                                <label for="validationDefault01">الخدمة التي يقدمها</label>
+                                                <label for="validationDefault01">الخدمة التي يقدمها <span class="required">*</span></label>
                                                 <select class="custom-select" required name="service_id">
+                                                        @if ($services->count()>0)
                                                         <option value=""></option>
                                                         @foreach ($services as $service)
-                                                                <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                                                <option value="{{ $service->id }}" class="font-weight-bold">{{ $service->name }}</option>
                                                         @endforeach
+                                                        @else
+                                                                <option disabled class="text-danger font-weight-bold"> لا توجد خدمات او تم مسح الخدمة الرجاء إضافة خدمات</option>
+                                                        @endif
+                                                </select>
+                                        </div>
+
+                                        <div class="col-md-3 mb-3">
+                                                <label for="validationDefault01">الولاية <span class="required">*</span></label>
+                                                <select class="custom-select" required name="state_id">
+                                                        @if ($states->count()>0)
+                                                                <option value=""></option>
+                                                                @foreach ($states as $state)
+                                                                        <option value="{{ $state->id }}" class="font-weight-bold">{{ $state->name }}</option>
+                                                                @endforeach
+                                                        @else
+                                                                <option disabled class="text-danger font-weight-bold"> لا توجد ولايات او تم مسح الولاية  الرجاء إضافة ولايات</option>
+                                                        @endif
+                                                                
+                                                </select>
+                                        </div>
+
+                                        <div class="col-md-3 mb-3">
+                                                <label for="validationDefault01">المحلية <span class="required">*</span></label>
+                                                <select class="custom-select" required name="district_id">
+                                                        @if ($states->count()>0)
+                                                                <option value=""></option>
+                                                                @foreach ($districts as $district)
+                                                                        <option value="{{ $district->id }}" class="font-weight-bold">{{ $district->name }}</option>
+                                                                @endforeach
+                                                        @else
+                                                                <option disabled class="text-danger font-weight-bold"> لا توجد ولايات او تم مسح الولاية  الرجاء إضافة ولايات</option>
+                                                        @endif
                                                         
                                                 </select>
                                         </div>
