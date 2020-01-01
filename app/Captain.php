@@ -24,6 +24,15 @@ class Captain extends Authenticatable implements JWTSubject
     }
 
 
+    public function state(){
+        return $this->belongsTo('App\States');
+    }
+
+
+    public function district(){
+        return $this->belongsTo('App\District');
+    }
+
 
     public function getJWTIdentifier()
     {

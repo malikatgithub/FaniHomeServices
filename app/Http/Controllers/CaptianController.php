@@ -129,7 +129,9 @@ class CaptianController extends BaseController
     {
         $services = Service::all();
         $captain = Captain::find($id);
-        return view('captains.edit')->with('captain', $captain)->with('services', $services);
+        $states = States::all();
+        $districts = District::all();
+        return view('captains.edit')->with('captain', $captain)->with('services', $services)->with('states', $states)->with('districts', $districts);
     }
 
     /**
@@ -158,6 +160,15 @@ class CaptianController extends BaseController
         }
 
 
+        if ($request->password){
+
+            $this->validate($request, [
+                'password' => 'min:6|required_with:password_conf|same:password_conf',
+                'password_conf' => 'min:6'
+                ]);
+
+        }
+
         $captain->name = $request->name;
         $captain->bod = $request->bod;
         $captain->relegion = $request->relegion;
@@ -166,8 +177,8 @@ class CaptianController extends BaseController
         $captain->nationality = $request->nationality;
         $captain->phone = $request->phone;
         $captain->phone2 = $request->phone2;
-        $captain->password = $request->password;
         $captain->address = $request->address;
+        $captain->password = Hash::make($request['password']);
 
         $captain->edu_level = $request->edu_level;
         $captain->service_id = $request->service_id;

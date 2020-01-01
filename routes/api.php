@@ -18,22 +18,23 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::middleware('jwt.auth')->group( function(){
-    Route::resource('books', 'API\BookController');
-});
-
-
-
 
     /* User API Routes
     ============================*/
+
+    
+
     Route::POST('/app_captain_register', 'APICaptainsController@register')->name('app_captain_register');
     Route::POST('/captain_login', 'APICaptainsController@login')->name('captain_login');
 
-    Route::middleware('jwt.auth')->group( function(){
+    
+    
+    Route::middleware(['jwt.auth', 'auth:api'])->group( function(){
         Route::GET('/show_profile/{captain_phone_num}', 'APICaptainsController@show_profile')->name('show_profile');
         Route::GET('/update_profile/{captain_phone_num}', 'APICaptainsController@update_profile')->name('update_profile');
+        Route::GET('/update_password/{captain_phone_num}', 'APICaptainsController@update_password')->name('update_password');
     });
+
    
 
     /* Services API Routes

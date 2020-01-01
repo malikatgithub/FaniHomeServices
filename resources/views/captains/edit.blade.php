@@ -15,6 +15,16 @@
                         <br>
                         <div class="container">
 
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                <ul>
+                                        @foreach ($errors->all() as $error)
+                                        <li class="text-left">{{ $error }}</li>
+                                        @endforeach
+                                </ul>
+                                </div>
+                                @endif
+
                                 {{-- Start of form  --}}
                                 <form action="{{route('captain_update', ['id'=> $captain->id])}}" method="POST" enctype="multipart/form-data">
                                 {{@csrf_field()}}
@@ -31,7 +41,7 @@
                                                             <div class="card-body border-0 flex-column w-100" >                  
 
                                     
-                                    <div class="form-row d-flex align-items-center">
+                                    <div class="form-row d-flex align-items-center" >
 
                                         <div class="col-md-2 mb-3">
                                                 <center><img src="{{ asset('upload/captains/profiles/'.$captain->pic) }}" alt="" width="150px" height="150px;" class="img-thumbnail"></center>
@@ -46,12 +56,12 @@
                                                 </div>
                                         </div>
                                         <div class="col-md-2 mb-3">
-                                                <label for="validationDefault01">رقم الكابتن <span class="required">*</span> </label>
+                                                <label for="validationDefault01">رقم الكابتن </label>
                                                 <input type="text" class="form-control border-success" id="validationDefault01" placeholder="auto-genterate" readonly value="" name="{{ $captain->reg_no }}" value="{{ $captain->reg_no }}">
                                         </div>
 
 
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-3 mb-3" >
                                                 <label for="validationDefault01">الإسم <span class="required">*</span> </label>
                                                 <input type="text" class="form-control" id="validationDefault01" placeholder="" value="{{ $captain->name }}" required name="name">
                                         </div>
@@ -125,6 +135,16 @@
                                                 </select>
                                         </div>
 
+                                       
+                                    
+                                        
+            
+                                        <div class="col-md-3 mb-3">
+                                                <label for="validationDefault01">رقم إثبات الهوية <span class="required">*</span></label>
+                                                <input type="number" class="form-control" id="validationDefault01" placeholder="" value="{{ $captain->id_num }}" required name="id_num">
+                                                
+                                        </div>
+
                                         <div class="col-md-3 mb-3">
                                                 <label for="validationDefault01"> الخدمة التي يقدمها</label>
                                                 
@@ -143,11 +163,57 @@
 
                                               
                                         </div>
-                                    
-                                        
-            
+
+                                        <div class="col-md-3 mb-3">
+                                                <label for="validationDefault01"> <span class="required">*</span> الولاية (<span class="text-danger font-weight-bold"> {{ $captain->state->name ?? 'تم مسح الولاية'}} </span>)</label>
+                                                <select class="custom-select" required name="state_id">
+
+                                                        @foreach ($states as $state)
+                                                                @if ($state->id == $captain->state_id)
+                                                                        <option value="{{ $state->id }}" selected>{{ $captain->state->name}}</option>
+                                                                @else
+                                                                        <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                                                @endif
+                                                        @endforeach
+
+                                                </select>
+                                        </div>
+
+                                        <div class="col-md-3 mb-3">
+                                                <label for="validationDefault01"> <span class="required">*</span> المحلية (<span class="text-danger font-weight-bold"> {{ $captain->district->name ?? 'تم مسح الولاية'}} </span>)</label>
+                                                <select class="custom-select" required name="district_id">
+                                                        
+                                                        @foreach ($districts as $district)
+                                                                @if ($district->id == $captain->district_id)
+                                                                        <option value="{{ $district->id }}" selected>{{ $captain->district->name}}</option>
+                                                                @else
+                                                                        <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                                                @endif
+                                                        @endforeach
+
+                                                </select>
+                                        </div>
+
+                                        <div class="col-md-12 mt-3">
+                                                <center><label for="validationDefault01">تغير كلمة المرور للكابتن </label></center>
+                                                <hr class="border border-danger">
+                                        </div>
+                 
+                                        <div class="col-md-6  mb-3">
+                                                <label for="validationDefault01"> كلمة المرور <span class="required">*</span></label>
+                                                <input type="password" class="form-control border-success" id="validationDefault01" placeholder="إتركة فارغا ان كنت لاترغب في التغير" value="" name="password">
+                                                <hr class="border border-danger">
                                                 
-                                            
+                                        </div>
+
+
+                                        <div class="col-md-6 mb-3">
+                                                <label for="validationDefault01"> تأكيد كلمة المرور <span class="required">*</span></label>
+                                                <input type="password" class="form-control border-success" id="validationDefault01" placeholder="إتركة فارغا ان كنت لاترغب في التغير" value="" name="password_conf">
+                                                <hr class="border border-danger">
+                                        </div>
+                                     
+
                                     </div>
             
                                     <div class="form-row">
@@ -182,8 +248,8 @@
                                                 </div>
         
                                                 <div class="col-md-4 mb-4">
-                                                        <label for="validationDefault01"> رقم آخر <span class="required">*</span></label>
-                                                        <input type="text" class="form-control" id="validationDefault01" placeholder="" value="{{ $captain->phone2 }}" required name="phone2">
+                                                        <label for="validationDefault01"> رقم آخر </label>
+                                                        <input type="text" class="form-control" id="validationDefault01" placeholder="" value="{{ $captain->phone2 }}"  name="phone2">
                                                 </div>
             
                                         </div>

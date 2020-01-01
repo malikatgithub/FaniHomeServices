@@ -14,9 +14,7 @@
                     </div>
                         <br>
                         <div class="container">
-
                                 
-
                                 @if ($errors->any())
                                 <div class="alert alert-danger">
                                 <ul>
@@ -139,14 +137,14 @@
 
                                         <div class="col-md-6 mb-3">
                                                 <label for="validationDefault01"> كلمة المرور <span class="required">*</span></label>
-                                                <input type="text" class="form-control border-danger" id="validationDefault01" placeholder="" value="" required name="password">
+                                                <input type="password" class="form-control border-danger" id="validationDefault01" placeholder="" value="" required name="password">
                                                 
                                         </div>
 
 
                                         <div class="col-md-6 mb-3">
                                                 <label for="validationDefault01"> تأكيد كلمة المرور <span class="required">*</span></label>
-                                                <input type="text" class="form-control border-danger" id="validationDefault01" placeholder="" value="" required name="password_conf">
+                                                <input type="password" class="form-control border-danger" id="validationDefault01" placeholder="" value="" required name="password_conf">
                                                 
                                         </div>
 

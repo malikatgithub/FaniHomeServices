@@ -12,9 +12,8 @@ return [
     | as required, but they're a perfect start for most applications.
     |
     */
-
     'defaults' => [
-        'guard' => 'api',
+        'guard' => 'web',
         'passwords' => 'users',
     ],
 
@@ -36,15 +35,16 @@ return [
     */
 
     'guards' => [
+
         'web' => [
             'driver' => 'session',
-            'provider' => 'captains',
+            'provider' => 'users',
         ],
 
         'api' => [
             'driver' => 'jwt',
             'provider' => 'captains',
-            'hash' => false,
+            
         ],
 
 
@@ -115,6 +115,8 @@ return [
             'provider' => 'captains',
             'table' => 'password_resets',
             'expire' => 60,
+            'throttle' => 60,
+
         ],
     ],
 
