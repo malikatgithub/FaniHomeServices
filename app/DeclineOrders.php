@@ -5,13 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class States extends Model
+class DeclineOrders extends Model
 {
     use softDeletes;
-
     protected $fillable = [
-        'name'
+        'location' ,
+        'order_id' , 
     ];
-
-
 }
+

@@ -50,61 +50,66 @@ class CaptianController extends BaseController
         $this->validate($request, [
             'name'=> 'required',
             'bod'=> 'required',
-            'relegion'=> 'required',
             'gender'=> 'required',
             'nationality'=> 'required',
-            'id_num'=>'min:16',
+            'id_num'=>'min:16|max:16|required',
             'phone'=> 'required',
-            'password'=> 'required',
             'address'=> 'required',
             'edu_level'=> 'required',
-            'service_id'=> 'required',
+            'service_id.*'=> 'required',
             'state_id'=> 'required',
             'district_id'=> 'required',
             'password' => 'min:6|required_with:password_conf|same:password_conf',
-            'password_conf' => 'min:6'
+            'password_conf' => 'min:6|required'
             ]);
 
-        
-        if ($request->hasFile('pic')) {
-            $pic = $request->pic;
-            $pic_new_name = time().$pic->getClientOriginalName();
-            $pic->move('upload/captains/profiles', $pic_new_name);
-        }
-        else
-        {
-            $pic_new_name = 'default.png';
-        }
-        
+       try {
 
-        $captain_reg_no = Captain::all();
+            if ($request->hasFile('pic')) {
+                $pic = $request->pic;
+                $pic_new_name = time().$pic->getClientOriginalName();
+                $pic->move('upload/captains/profiles', $pic_new_name);
+            }
+            else
+            {
+                $pic_new_name = 'default.png';
+            }
+            
 
-        /** To generate the reg_no */
-        $captain_new_reg_no = $captain_reg_no->count()+1;
-        
-        /** To generate the reg_no */
-        
-   
-        $captain = Captain::create([
-            'reg_no'=> $captain_new_reg_no,
-            'name'=> $request->name,
-            'bod'=> $request->bod,
-            'relegion'=> $request->relegion,
-            'gender'=> $request->gender,
-            'nationality'=> $request->nationality,
-            'id_num'=> $request->id_num,
-            'phone'=> $request->phone,
-            'phone2'=> $request->phone2,
-            'password' => Hash::make($request['password']),
-            'address'=> $request->address,
-            'edu_level'=> $request->edu_level,
-            'service_id'=> $request->service_id,
-            'state_id'=> $request->state_id,
-            'district_id'=> $request->district_id,
-            'note'=> $request->note,
-            'pic'=> $pic_new_name, 
-        ]);
-        return redirect()->route('captain_create')->with('success', 'تم إضافة الكابتن.');
+            $captain_reg_no = Captain::all();
+
+            /** To generate the reg_no */
+            $captain_new_reg_no = $captain_reg_no->count()+1;
+            
+            /** To generate the reg_no */
+            
+    
+            $captain = Captain::create([
+                'reg_no'=> $captain_new_reg_no,
+                'name'=> $request->name,
+                'bod'=> $request->bod,
+                'relegion'=> $request->relegion,
+                'gender'=> $request->gender,
+                'nationality'=> $request->nationality,
+                'id_num'=> $request->id_num,
+                'phone'=> $request->phone,
+                'phone2'=> $request->phone2,
+                'password' => Hash::make($request['password']),
+                'address'=> $request->address,
+                'edu_level'=> $request->edu_level,
+                'service_id'=> serialize($request->service_id),
+                'state_id'=> $request->state_id,
+                'district_id'=> $request->district_id,
+                'note'=> $request->note,
+                'pic'=> $pic_new_name, 
+            ]);
+
+            return redirect()->route('captain_create')->with('success', 'تم إضافة الكابتن.')->with('success', $request->all(['service_id']));
+
+       } catch (\Throwable $th) {
+        return redirect()->route('captain_create')->with('fail', 'تم التسجيل مسبقا بهذا الرقم الوطني أو رقم الهاتف');
+       } 
+       
     }
 
     /**
@@ -143,52 +148,79 @@ class CaptianController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $captain = Captain::find($id);
 
-        if($request->hasFile('pic')){
+        $this->validate($request, [
+            'name'=> 'required',
+            'bod'=> 'required',
+            'gender'=> 'required',
+            'nationality'=> 'required',
+            'id_num'=>'min:16|max:16|required',
+            'phone'=> 'required',
+            'address'=> 'required',
+            'edu_level'=> 'required',
+            'service_id.*'=> 'required',
+            'state_id'=> 'required',
+            'district_id'=> 'required',
+            ]);
 
+        try {
+            
             $captain = Captain::find($id);
-            $file= $captain->pic;
-            $filename = public_path().'/upload/captains/profiles/'.$file;
-            \File::delete($filename);
 
-            $pic = $request->pic;
-            $pic_new_name = time().$pic->getClientOriginalName();
-            $pic->move('upload/captains/profiles', $pic_new_name);
-            $captain->pic = $pic_new_name;
+            if($request->hasFile('pic')){
 
+                $captain = Captain::find($id);
+                $file= $captain->pic;
+                $filename = public_path().'/upload/captains/profiles/'.$file;
+                \File::delete($filename);
+
+                $pic = $request->pic;
+                $pic_new_name = time().$pic->getClientOriginalName();
+                $pic->move('upload/captains/profiles', $pic_new_name);
+                $captain->pic = $pic_new_name;
+
+            }
+
+
+            if ($request->password){
+
+                $this->validate($request, [
+                    'password' => 'min:6|required_with:password_conf|same:password_conf',
+                    'password_conf' => 'min:6'
+                    ]);
+
+            }
+
+            $captain->name = $request->name;
+            $captain->bod = $request->bod;
+            $captain->relegion = $request->relegion;
+            $captain->gender = $request->gender;
+
+            $captain->nationality = $request->nationality;
+            $captain->id_num = $request->id_num;
+            
+            $captain->phone = $request->phone;
+            $captain->phone2 = $request->phone2;
+            $captain->address = $request->address;
+            $captain->password = Hash::make($request['password']);
+
+            $captain->edu_level = $request->edu_level;
+            $captain->service_id = serialize($request->service_id);
+            $captain->state_id = $request->state_id;
+            $captain->district_id = $request->district_id;
+            $captain->note = $request->note;
+    
+            $captain->save();
+
+            return redirect()->route('captains_show_page')->with('success', 'تم تعديل بيانات الكابتن.');
+
+        } catch (\Throwable $th) {
+            $services = Service::all();
+            $captain = Captain::find($id);
+            $states = States::all();
+            $districts = District::all();
+            return redirect()->back()->with('captain', $captain)->with('services', $services)->with('states', $states)->with('districts', $districts)->with('fail', 'تم التسجيل مسبقا بهذا الرقم الوطني أو رقم الهاتف');
         }
-
-
-        if ($request->password){
-
-            $this->validate($request, [
-                'password' => 'min:6|required_with:password_conf|same:password_conf',
-                'password_conf' => 'min:6'
-                ]);
-
-        }
-
-        $captain->name = $request->name;
-        $captain->bod = $request->bod;
-        $captain->relegion = $request->relegion;
-        $captain->gender = $request->gender;
-
-        $captain->nationality = $request->nationality;
-        $captain->phone = $request->phone;
-        $captain->phone2 = $request->phone2;
-        $captain->address = $request->address;
-        $captain->password = Hash::make($request['password']);
-
-        $captain->edu_level = $request->edu_level;
-        $captain->service_id = $request->service_id;
-        $captain->state_id = $request->state_id;
-        $captain->district_id = $request->district_id;
-        $captain->note = $request->note;
-   
-        $captain->save();
-
-        return redirect()->route('captains_show_page')->with('success', 'تم تعديل بيانات الكابتن.');
 
 
         

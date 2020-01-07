@@ -15,6 +15,7 @@
                         <br>
                         <div class="container">
                                 
+                               
                                 @if ($errors->any())
                                 <div class="alert alert-danger">
                                 <ul>
@@ -43,6 +44,17 @@
                 
                                 {{Session::forget('delete')}}
                                 @endif
+
+
+                                @if (Session::has('fail'))
+                
+                                <div class="alert alert-danger">
+                                        <i class="fas fa-exclamation-triangle fa-1x"></i> &nbsp;  {{Session::get('fail')}}
+                                </div>  
+                
+                                {{Session::forget('fail')}}
+                                @endif
+
                                 
                                 @if (Session::has('success'))
                 
@@ -91,15 +103,16 @@
                                                     <label for="validationDefault01">تاريخ الميلاد <span class="required">*</span></label>
                                                     <input type="date" class="form-control" id="validationDefault01" placeholder="" value="" required name="bod">
                                             </div>
-                                            
+
                                             <div class="col-md-3 mb-3">
-                                                <label for="validationDefault01">الديانة <span class="required">*</span></label>
-                                                <select class="custom-select" required name="relegion">
-                                                        <option value=""></option>
-                                                        <option value="مسلم">مسلم</option>
-                                                        <option value="مسيحي">مسيحي</option>
-                                                </select>
+                                                <label for="validationDefault01">الصورة</label>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" name="pic">
+                                                    <label class="custom-file-label text-center" for="inputGroupFile01">أضغط للتحميل</label>
+                                                </div>
                                             </div>
+                                            
+                               
 
                                     </div>
             
@@ -149,7 +162,7 @@
                                         </div>
 
 
-                                        <div class="col-md-3 mb-3">
+                                        {{--  <div class="col-md-3 mb-3">
                                                 <label for="validationDefault01">الخدمة التي يقدمها <span class="required">*</span></label>
                                                 <select class="custom-select" required name="service_id">
                                                         @if ($services->count()>0)
@@ -161,7 +174,32 @@
                                                                 <option disabled class="text-danger font-weight-bold"> لا توجد خدمات او تم مسح الخدمة الرجاء إضافة خدمات</option>
                                                         @endif
                                                 </select>
+                                        </div>  --}}
+                                        
+
+                                        <div class="col-md-12 mb-3">
+                                                <label for="validationDefault01">الخدمة التي يقدمها <span class="required">*</span></label>
+                                                <hr class="border-secondary">
+                                                <div class="row">
+                                                        @if ($services->count()>0)
+                                                        @foreach ($services as $service)
+                                                               <div class="col-md-2">
+                                                                        <div class="form-check">
+                                                                                <input type="checkbox" class="form-check-input " id="Checkbox" name="service_id[]" value="{{ $service->id }}">
+                                                                                <label class="form-check-label mr-4 mt-1" for="Checkbox">{{ $service->name }}</label>
+                                                                        </div>
+                                                               </div>
+                                                        @endforeach
+                                                        @else
+                                                                <div class="col-md-12">
+                                                                        <span disabled class="text-center text-danger font-weight-bold">- لا توجد خدمات او تم مسح الخدمة الرجاء إضافة خدمات - </span>
+                                                                </div>
+                                                        @endif
+                                                </div>
+                                                <hr class="border-secondary">
                                         </div>
+
+                                           
 
                                         <div class="col-md-3 mb-3">
                                                 <label for="validationDefault01">الولاية <span class="required">*</span></label>
@@ -193,23 +231,16 @@
                                                 </select>
                                         </div>
                                     
-                                        <div class="col-md-3 mb-3">
-                                            <label for="validationDefault01">الصورة</label>
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" name="pic">
-                                                <label class="custom-file-label text-center" for="inputGroupFile01">أضغط للتحميل</label>
-                                            </div>
-                                        </div>
-            
-                                                
-                                            
+
                                     </div>
             
+                                    
+                                 
                                     <div class="form-row">
                                         <div class="col-md-12 mb-12">
                                                 <div class="form-group">
                                                         <label for="exampleFormControlTextarea1">ملاحظات</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note"></textarea>
+                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note">لاتوجد ملاحظات </textarea>
                                                 </div>
                                         </div>
                                     </div>

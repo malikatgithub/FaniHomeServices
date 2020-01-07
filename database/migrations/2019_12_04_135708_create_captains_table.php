@@ -18,7 +18,7 @@ class CreateCaptainsTable extends Migration
             $table->string('reg_no');
             $table->string('name');
             $table->date('bod'); 
-            $table->string('relegion');
+            $table->string('relegion')->nullable();
             $table->string('gender');
             $table->string('nationality');
             $table->bigInteger('id_num')->unique();
@@ -27,7 +27,7 @@ class CreateCaptainsTable extends Migration
             $table->string('password');
             $table->string('address');
             $table->string('edu_level');
-            $table->integer('service_id');
+            $table->string('service_id');
             $table->integer('state_id');
             $table->integer('district_id');
             $table->string('pic')->nullable();

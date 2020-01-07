@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\User;
 use App\Captain;
+use App\OnlineCaptains;
 use JWTFactory;
 use JWTAuth;
 use Validator;
@@ -41,7 +42,7 @@ class APICaptainsController extends Controller
             'phone' => 'required',
             'password' => 'required',
         ]);
-
+ 
         if($validator -> fails()){
             return response()->json($validator->errors());
         }
@@ -80,16 +81,15 @@ class APICaptainsController extends Controller
         $validator = Validator::make($request -> all(),[
             'name'=> 'required',
             'bod'=> 'required',
-            'relegion'=> 'required',
             'gender'=> 'required',
             'nationality'=> 'required',
-            'id_num'=>'min:16',
+            'id_num'=>'min:16|required',
             'phone'=> 'required',
             'password' => 'min:6|required_with:password_conf|same:password_conf',
-            'password_conf' => 'min:6',
+            'password_conf' => 'min:6|required',
             'address'=> 'required',
             'edu_level'=> 'required',
-            'service_id'=> 'required',
+            'service_id.*'=> 'required',
             'state_id'=> 'required',
             'district_id'=> 'required',
             ]);
@@ -124,13 +124,14 @@ class APICaptainsController extends Controller
                         'reg_no'=> $captain_new_reg_no,
                         'name'=> $request->name,
                         'bod'=> $request->bod,
-                        'relegion'=> $request->relegion,
                         'gender'=> $request->gender,
                         'nationality'=> $request->nationality,
                         'id_num'=> $request->id_num,
                         'phone'=> $request->phone,
                         'phone2'=> $request->phone2,
                         'password' => Hash::make($request['password']),
+                        //'service_id' => json_encode($request->service_id),
+                        'service_id' => $request->service_id,
                         'address'=> $request->address,
                         'edu_level'=> $request->edu_level,
                         'service_id'=> $request->service_id,
@@ -144,7 +145,7 @@ class APICaptainsController extends Controller
                     return response()->json('Captian data created successfully');
 
                 } catch (\Throwable $th) {
-                    return response()->json("$request->name :  تم التسجيل مسبقا بهذا الرقم الوطني أو رقم الهاتف");
+                    return response()->json("$th :  تم التسجيل مسبقا بهذا الرقم الوطني أو رقم الهاتف");
                 }
             }  
     }
@@ -187,14 +188,13 @@ class APICaptainsController extends Controller
         $validator = Validator::make($request -> all(),[
             'name'=> 'required',
             'bod'=> 'required',
-            'relegion'=> 'required',
             'gender'=> 'required',
             'nationality'=> 'required',
             'id_num'=>'min:16',
             'phone'=> 'required',
             'address'=> 'required',
             'edu_level'=> 'required',
-            'service_id'=> 'required',
+            'service_id.*'=> 'required',            
             'state_id'=> 'required',
             'district_id'=> 'required',
             ]);
@@ -299,5 +299,57 @@ class APICaptainsController extends Controller
         
      }
 
+    /*
+    ==============================================================
+        Functions Online Captains and Offline Captains
+    ==============================================================
+    */
+
+    public function go_Online(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'captain_id' => 'required',
+            'name' => 'required',
+            'phone' => 'required',
+            'service_id' => 'required',
+            'location' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors());
+        }
+
+        else{
+            
+            try {
+                $login_attempt = OnlineCaptains::create($request->all());
+                $captain_data = OnlineCaptains::where('captain_id' , $request->captain_id)->get();
+                return response()->json([$captain_data ,'Login successfully']);
+            } catch (\Throwable $th) {
+                return response()->json($th);
+            }
+        }
+
+    }
+
+
+      /*
+    ==============================================================
+        Offline Function Require Online Column Id (onlineTicketId) To turn off
+    ==============================================================
+    */
+
+
+    public function go_Offline($onlineTicketId){
+       
+            try {
+                $OnlineCaptain = OnlineCaptains::find($onlineTicketId);
+                $OnlineCaptain->delete();
+                return response()->json('Logout successfully');
+            } catch (\Throwable $th) {
+                return response()->json($th);
+            }
+
+    }
 
 }

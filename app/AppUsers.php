@@ -5,13 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class States extends Model
-{
-    use softDeletes;
-
+class AppUsers extends Model
+{   
+    use SoftDeletes;
+    
     protected $fillable = [
-        'name'
+        'name','email','phone','pic'
     ];
-
 
 }

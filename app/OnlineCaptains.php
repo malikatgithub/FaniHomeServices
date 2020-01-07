@@ -5,13 +5,14 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class States extends Model
+class OnlineCaptains extends Model
 {
     use softDeletes;
-
     protected $fillable = [
-        'name'
+        'captain_id' ,
+        'name',
+        'phone' ,
+        'service_id' ,
+        'location',
     ];
-
-
 }
