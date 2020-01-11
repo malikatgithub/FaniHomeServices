@@ -16,6 +16,7 @@ class CreateAcceptedOrdersTable extends Migration
         Schema::create('accepted_orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('order_id');
+            $table->integer('captain_id');
             $table->double('location');
             $table->timestamps();
         });

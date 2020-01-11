@@ -76,17 +76,40 @@
                                                 
                 
                                                 <div class="col-md-3 mb-3">
-                                                        <label for="validationDefault01">المهنة </label>
-                                                        <input type="text" class="form-control border-danger font-weight-bold" id="validationDefault01" placeholder="" value="{{ $captain->service->name ?? 'لقد تم حذف هذة الخدمة' }}" required name="" readonly>
-                                                        <input type="hidden" class="form-control" id="validationDefault01" placeholder="" value="{{ $captain->service_id }}" required name="service_id" readonly>
+                                                <label for="validationDefault01" class="text-danger"> الرصيد الحالي </label>
+                                                <input type="number" class="form-control border-danger" id="validationDefault01" placeholder="" value="{{ $total_balance }}" required name="ava_balance" readonly>
+                                                </div>
+                                                
+                                                <div class="col-md-3 mb-3">
+                                                        <label for="validationDefault01"> الخدمات التي يقدمها </label>
+                                                        <br>
+                                                        <input type="hidden" class="form-control" id="validationDefault01" placeholder="" value="{{ $captain->service_id }}" required name="service_id" readonly> 
+
+                                                        @if ($services->count()>0)
+                                                        @php
+                                                            $captain_services = unserialize($captain->service_id);
+                                                            $x= 0;
+                                                        @endphp
+        
+                                                            @foreach ($services as $service)
+                                                                @php
+                                                                    $x++; 
+                                                                @endphp
+                                                                @if(in_array($service->id, $captain_services))
+                                                                    <span class="font-weight-bold">{{$x}} - {{ $service->name  }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                                @endif
+    
+                                                            @endforeach
+                                                  
+                                                        @else
+                                                           - لا توجد خدمات او تم مسح الخدمة الرجاء إضافة خدمات - 
+                                                    @endif
+
                                                         
                                                 </div>
                                                 
                 
-                                                {{-- <div class="col-md-6 mb-3">
-                                                        <label for="validationDefault01" class="text-danger"> الرصيد الحالي </label>
-                                                        <input type="number" class="form-control border-danger" id="validationDefault01" placeholder="" value="{{ $total_balance }}" required name="ava_balance" readonly>
-                                                </div> --}}
+                                              
                                               
                 
                                                       
@@ -114,7 +137,7 @@
                                             
                                             <div class="col-md-12 mb-3">
                                                 <label for="exampleFormControlTextarea1"> <span class="required">*</span>  ملاحظات</label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note"></textarea>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note">لاتوجد</textarea>
                                             </div>
             
                                                   

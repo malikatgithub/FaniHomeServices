@@ -71,6 +71,7 @@ class OrderController extends Controller
 
         $validator = Validator::make($request->all(), [
             'order_id' => 'required',
+            'captain_id' => 'required',
             'location' => 'required',
         ]);
 

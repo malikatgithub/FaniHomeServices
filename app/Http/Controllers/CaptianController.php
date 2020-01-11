@@ -121,7 +121,9 @@ class CaptianController extends BaseController
     public function show($id)
     {
         $captain = Captain::find($id);
-        return view('captains.show')->with('captain', $captain);
+        $services = Service::all();
+
+        return view('captains.show')->with('captain', $captain)->with('services', $services);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Captain;
+use App\Service;
 use App\Balance;
 use DB;
 
@@ -141,6 +142,7 @@ class BalanceController extends Controller
     {
         
         $captain = Captain::find($id);
+        $services = Service::all();
         $balances = DB::table('balances')
         ->where('captain_id', '=', $id)
         ->whereNull('deleted_at')
@@ -152,7 +154,7 @@ class BalanceController extends Controller
             $total_balance = $total_balance + $balance->balance;
         }
 
-        return view('balance.create')->with('captain', $captain)->with('total_balance', $total_balance);
+        return view('balance.create')->with('captain', $captain)->with('total_balance', $total_balance)->with('services', $services);
     }
 
       /**

@@ -65,19 +65,6 @@
             
                                     <div class="form-row">
 
-                                                <div class="col-md-3 mb-3">
-                                                                <label for="validationDefault01">الديانة <span class="required">*</span></label>
-                                                                <select class="custom-select" required name="relegion" disabled>
-                
-                                                                        @if ($captain->relegion =='مسلم')
-                                                                        <option value="مسلم" selected>مسلم</option>
-                
-                                                                        @else
-                                                                        <option value="مسيحي" selected>مسيحي</option>
-                                                                        @endif
-                                                        
-                                                                </select>
-                                                            </div>
                                         <div class="col-md-3 mb-3">
                                                 <label for="validationDefault01">الجنس <span class="required">*</span></label>
                                                 <select class="custom-select" required name="gender" disabled>
@@ -106,13 +93,71 @@
                                                 </select>
                                         </div>
 
-                                        <div class="col-md-3 mb-3">
-                                                <label for="validationDefault01">المهنة</label>
-
-
-                                                <input type="text" class="form-control" id="validationDefault01" placeholder="" value=" {{ $captain->service->name ?? 'تم حذف الخدمة من القائمة' }}" name="profession" readonly>
+                                        <div class="col-md-6 mb-3">
+                                                <label for="validationDefault01">رقم إثبات الهوية</label>
+                                                <input type="text" class="form-control" id="validationDefault01" placeholder="" value=" {{ $captain->id_num }}" name="id_num" readonly>
                                         </div>
+
+
+                                        <div class="col-md-3 mb-3">
+                                                <label for="validationDefault01">الولاية <span class="required">*</span></label>
+                                                <input type="text" class="form-control" id="validationDefault01" placeholder="" value=" {{ $captain->state->name}}" name="state" readonly>
+                                                
+                                        </div>
+
+                                        <div class="col-md-3 mb-3">
+                                                <label for="validationDefault01">المحلية <span class="required">*</span></label>
+                                                <input type="text" class="form-control" id="validationDefault01" placeholder="" value=" {{ $captain->district->name }}" name="district" readonly>
+                                        </div>
+                                        
+                                        <div class="col-md-12 mb-3">
+                                                <label for="validationDefault01">الخدمة التي يقدمها <span class="required">*</span></label>
+                                                <hr class="border-secondary">
+                                                <div class="row">
+                                                        @if ($services->count()>0)
+
+                                                        @php
+                                                            $captain_services = unserialize($captain->service_id);
+                                                        @endphp
+                                                        
+                                                        @foreach ($services as $service)
+                                                               <div class="col-md-2">
+                                                                        <div class="form-check">
+                                                                                <input type="checkbox" class="form-check-input" id="Checkbox" name="service_id[]" disabled value="{{ $service->id }}" {{ in_array($service->id, $captain_services) ? "checked": ""}}>
+                                                                                <label class="form-check-label mr-4 mt-1" for="Checkbox">{{ $service->name }}</label>
+                                                                        </div>
+                                                               </div>
+                                                        @endforeach
+                                                        @else
+                                                                <div class="col-md-12">
+                                                                        <span disabled class="text-center text-danger font-weight-bold">- لا توجد خدمات او تم مسح الخدمة الرجاء إضافة خدمات - </span>
+                                                                </div>
+                                                        @endif
+                                                </div>
+                                                <hr class="border-secondary">
+                                        </div>
+
+                                        
                                     
+
+                                        <div class="col-md-12 mt-3">
+                                                <center><label for="validationDefault01"> كلمة المرور للكابتن </label></center>
+                                                <hr class="border-danger">
+                                        </div>
+
+                                        <div class="col-md-6  mb-3">
+                                                <label for="validationDefault01"> كلمة المرور <span class="required">*</span></label>
+                                                <input type="text" class="form-control border-success" id="validationDefault01" placeholder="إتركة فارغا ان كنت لاترغب في التغير" value="*********" name="password" readonly>
+                                                <hr class="border-danger">
+                                                
+                                        </div>
+
+
+                                        <div class="col-md-6 mb-3">
+                                                <label for="validationDefault01"> تأكيد كلمة المرور <span class="required">*</span></label>
+                                                <input type="text" class="form-control border-success" id="validationDefault01" placeholder="إتركة فارغا ان كنت لاترغب في التغير" value="*********" name="password_conf" readonly>
+                                                <hr class="border-danger">
+                                        </div>
                                         
             
                                                 

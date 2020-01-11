@@ -20,7 +20,7 @@ class CreateBalancesTable extends Migration
             $table->string('name');
             $table->string('reg_no');
             $table->string('balance');
-            $table->integer('service_id');
+            $table->string('service_id')->nullable();
             $table->string('phone');
             $table->string('note');
             $table->softDeletes();

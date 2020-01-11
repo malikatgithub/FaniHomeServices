@@ -46,7 +46,7 @@
                     setTimeout("closePrintView()", 3000);
                 });
                 function closePrintView() {
-                    document.location.href = '/captains_report';
+                    document.location.href = '/orders_report';
                 }
             </script>
         @else
@@ -63,7 +63,7 @@
         
                     <div class="col-md-6 mt-5">
                         <h5 class="text-center text-dark font-weight-bold">فـني للصيـــــانـة المـــــنزلـية</h5>
-                        <h5 class="text-center text-dark font-weight-bold">وحــدة إدارة سجلات الكابتني</h5>
+                        <h5 class="text-center text-dark font-weight-bold">وحــدة إدارة سجلات طلبات المستخدمين</h5>
                     </div>
         
                     <div class="col-md-3">
@@ -80,37 +80,34 @@
             
         <ul class="m-4"> 
             <li><h6>وحدة السجلات الشركة</h6></li>
-            <li><h6>تقرير بيانات الكابتن</h6></li>
+            <li><h6>تقرير بيانات الطلبات</h6></li>
             <li><h6>التاريخ  : {{date('Y-m-d')}}</h6></li>
         </ul>
 
 
-        @if (isset($captains))
+        @if (isset($orders))
            
             
-            @if ($captains-> isEmpty())
+            @if ($orders-> isEmpty())
             <div class="alert alert-dark mt-3">
-                    <center><h5 class="text-center font-weight-bold">لم يتم كابتن لهذه الخدمة ! </h5> </center>
+                    <center><h5 class="text-center font-weight-bold"> لاتوجد طلبات حالية من خلال التطبيق</h5> </center>
             </div>
             @endif
 
 
-        @if (count($captains)>0)
+        @if (count($orders)>0)
             <table class="table table-striped table-bordered text-right" >
                 <br>
-                    <thead >
+                    <thead>
+
                     <tr class="font-weight-bold">
-                        <td>#</td>
-                        <td>الإسم</td>
-                        <td>تاريخ الميلاد</td>
-                        <td>الجنس</td>
-                        <td>الجنسية</td>
-                        <td>الهاتف</td>
-                        <td>الهاتف البديل</td>
-                        <td>المؤهل</td>
+                        <td>رقم الطلب</td>
+                        <td>إسم المستخدم</td>
                         <td>الخدمة</td>
-                        <td>العنوان</td>
-                        </tr>
+                        <td>الموقع</td>
+                        <td>حالة الطلب</td>
+                    </tr>
+
                     </thead>
                     <tbody class="text-right">
                             
@@ -118,35 +115,48 @@
                                     $x=0;
                                 @endphp
 
-                                @foreach ($captains as $captain)
+                                @foreach ($orders as $order)
                                     @php
                                         $x++;
+
+                                        if($order->status == '0'){
+                                            $status = 'تم الرفض';
+                                        }
+
+                                        else{
+                                            $status = 'تم قبول الطلب';
+                                        }
                                     @endphp
                                         <tr>
-                                            <td>{{ $x }}</td>
-                                            <td>{{ $captain->name }}</td>
-                                            <td>{{ $captain->bod }}</td>
-                                            <td>{{ $captain->gender }}</td>
-                                            <td>{{ $captain->nationality }}</td>
-                                            <td>{{ $captain->phone}}</td>
-                                            <td>{{ $captain->phone2 }}</td>
-                                            <td>{{ $captain->edu_level }}</td>
+                                            
+                                            {{--  <td>{{ $order->service_list }}</td>  --}}
+                                            {{--  
+                                            ===============================================================
+                                            Function for check report type and return the service name 
+                                            two types of report are here 
+                                            service report and general order report  
+                                            ===============================================================
+                                            --}}
 
                                             @if ($report_type == 'service_report')
 
                                                 @if ($services->count()>0)
-                                                    @php
-                                                        $captain_services = unserialize($captain->service_id);
-                                                    @endphp
-                                                <td>
+                                                @php
+                                                    $order_services = unserialize($order->service_list);
+                                                @endphp
+                                               
                                                     @foreach ($services as $service)
                                                         
-                                                        @if(in_array($service_id, $captain_services) and $service_id == $service->id)
-                                                            {{ $service->name }} <br>
+                                                        @if(in_array($service_id, $order_services) and $service_id == $service->id)
+                                                        <td>{{ $x }}</td>
+                                                        <td>{{ $order->user->name }}</td>
+                                                        <td>{{ $service->name }} </td>
+                                                        <td>{{ $order->location }}</td>
+                                                        <td>{{ $status}}</td>
                                                         @endif
 
                                                     @endforeach
-                                                </td>
+                                                
                                                 @else
                                                     <td>- لا توجد خدمات او تم مسح الخدمة الرجاء إضافة خدمات - </td>
                                                 @endif
@@ -154,27 +164,29 @@
                                             @else
 
                                                 @if ($services->count()>0)
-                                                    @php
-                                                        $captain_services = unserialize($captain->service_id);
-                                                    @endphp
-                                                    <td>
-                                                        @foreach ($services as $service)
-                                                            
-                                                            @if(in_array($service->id, $captain_services))
-                                                                {{ $service->name }} <br>
-                                                            @endif
+                                                @php
+                                                    $order_services = unserialize($order->service_list);
+                                                @endphp
+                                               
+                                                    @foreach ($services as $service)
+                                                        
+                                                        @if(in_array($service->id, $order_services))
+                                                            <td>{{ $x }}</td>
+                                                            <td>{{ $order->user->name }}</td>
+                                                            <td>{{ $service->name }} </td>
+                                                            <td>{{ $order->location }}</td>
+                                                            <td>{{ $status}}</td>
+                                                        @endif
 
-                                                        @endforeach
-                                                    </td>
-                                                    @else
-                                                        <td>- لا توجد خدمات او تم مسح الخدمة الرجاء إضافة خدمات - </td>
+                                                    @endforeach
+                                            
+                                                @else
+                                                    <td>- لا توجد خدمات او تم مسح الخدمة الرجاء إضافة خدمات - </td>
                                                 @endif
 
                                             @endif
+
                                             
-
-
-                                            <td>{{ $captain->address }}</td>
                                         </tr>
                                 @endforeach
 

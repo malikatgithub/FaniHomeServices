@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes();
 Route::match(['get', 'post'], 'register', function(){
@@ -26,6 +24,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 /*Main Application Routes
 ===================================*/
 Route::middleware(['auth'])->group(function () { 
+
+    Route::get('/', function () { return view('home'); });
 
     /* Captain Routes
     ============================*/
@@ -92,7 +92,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    /* balance Routes
+    /* Reports Routes
     ============================*/
     Route::get('/captains_report', 'ReportsController@captains_report')->name('captains_report');
     Route::get('/captains_report_show/{id}', 'ReportsController@captains_report_show')->name('captains_report_show');
@@ -102,6 +102,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/captain_balance_report/{id}', 'ReportsController@captain_balance_report')->name('captain_balance_report');
     Route::get('/captain_balance_report_print/{id}', 'ReportsController@captain_balance_report_print')->name('captain_balance_report_print');
 
+
+    /* Orders Reports
+    ============================*/
+    Route::get('/orders_report', 'ReportsController@orders_report')->name('orders_report');
+    Route::get('/orders_report_show/{id}', 'ReportsController@orders_report_show')->name('orders_report_show');
+    Route::POST('/order_service_report', 'ReportsController@order_service_report')->name('order_service_report');
+    Route::get('/accepted_orders_report/{id}', 'ReportsController@accepted_orders_report')->name('accepted_orders_report');
+    Route::get('/rejected_orders_report/{id}', 'ReportsController@rejected_orders_report')->name('rejected_orders_report');
+    Route::POST('/order_status_service_report', 'ReportsController@order_status_service_report')->name('order_status_service_report');
+    
+    
+    
      /*==== Ajax Search Engine ====*/
      Route::get('/live_search/balance_report', 'searchController@balance_report')->name('live_search.balance_report');
      /*==== End Ajax Search Engine ====*/

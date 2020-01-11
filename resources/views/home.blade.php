@@ -118,6 +118,32 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
+                            <div class="col-md-6 p-3 ">
+                                <div class="card text-right ">
+                                    <h5 class="card-header"><i class="fas fa-file text-danger"></i>&nbsp; نافذة تقارير الطلبات </h5>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="card-body"> 
+                                                <h6 class="card-title">تقارير كل الطلبات  </h6>
+                                                <p class="card-text">
+                                                    <a href="{{ route('orders_report') }}" class="btn btn-dark text-white"><i class="fa fa-file-alt"></i> تقارير الطلبات</a>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="card-body float-left opacity-50"> 
+                                                <i class="fas fa-file-alt text-primary fa-5x"></i>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
     
                         </div>
 

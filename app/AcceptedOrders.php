@@ -9,6 +9,7 @@ class AcceptedOrders extends Model
 {
     protected $fillable = [
         'location' ,
+        'captain_id' ,
         'order_id' , 
     ];
 }

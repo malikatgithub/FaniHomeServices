@@ -115,7 +115,24 @@
                             <td>{{ $captain->phone}}</td>
                             <td>{{ $captain->phone2 }}</td>
                             <td>{{ $captain->edu_level }}</td>
-                            <td>{{ $captain->service->name }}</td>
+
+                            @if ($services->count()>0)
+                                @php
+                                    $captain_services = unserialize($captain->service_id);
+                                @endphp
+                                <td>
+                                    @foreach ($services as $service)
+                                        
+                                        @if(in_array($service->id, $captain_services))
+                                            {{ $service->name }} <br>
+                                        @endif
+
+                                    @endforeach
+                                </td>
+                                @else
+                                    <td>- لا توجد خدمات او تم مسح الخدمة الرجاء إضافة خدمات - </td>
+                            @endif
+
                             <td>{{ $captain->address }}</td>
                         </tr>
                     </tbody>
@@ -130,7 +147,6 @@
                             <tr class='thead-dark'>
                                 <th>رقم الفاتورة</th>
                                 <th>التاريخ</th>
-                                <th>الخدمة</th>
                                 <th>الرصيد الوارد</th>
                             </tr>
                         </thead>
@@ -148,7 +164,7 @@
                                     <tr>
                                         <td>{{ $balance->invoice_id }}</td>
                                         <td>{{ $date }}</td>
-                                        <td>{{ $balance->service->name }}</td>
+                                        {{-- <td>{{ $balance->service->name }}</td> --}}
                                         <td>{{ $balance->balance }}</td>
                                     </tr>
                                 @endforeach

@@ -1,7 +1,7 @@
 
 <div class="row">
         <div class="container">
-            <input type="text" name="search" id="search" class="form-control" placeholder="أدخل الاسم أو الرقم الأكاديمي" />
+            <input type="text" name="search" id="search" class="form-control" placeholder="أدخل الاسم أو رقم التسجيل" />
             <br>
             <div class="col-md-12">
                 <div class="table-responsive">

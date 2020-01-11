@@ -42,15 +42,34 @@ class searchController extends Controller
                     <th>إسم الكابتن</th>
                     <th>الجنسية</th>
                     <th>رقم الهاتف</th>
-                    <th>المهنة</th>
                     <th>المؤهل</th>
                     <th>العنوان</th>
                     <th class='text-center'>العمليات</th>
                 </tr>
                 ";
 
-                
+                $services = Service::all();
+                                                      
                 foreach ($data as $row) {
+
+                    $captain_services = unserialize($row->service_id);
+
+                    /*
+                    ===============================================
+                    Function for get the serivce name and id
+                    ===============================================
+                  
+
+                    foreach ($services as $service){
+                        // $array[] = $service->id;
+
+                        if (in_array($service->id, $captain_services)){
+                            $name = $service->name;
+                        }
+                    }
+
+                
+                    ===============================================*/
 
                     $output .= "
                         <tr>
@@ -58,7 +77,6 @@ class searchController extends Controller
                         <td>$row->name</td>
                         <td>$row->nationality</td>
                         <td>$row->phone</td>
-                        <td>$row->service_id</td>
                         <td>$row->edu_level</td>
                         <td>$row->address</td>
                         <td class='text-center'>
@@ -123,7 +141,6 @@ class searchController extends Controller
                     <th>إسم الكابتن</th>
                     <th>الجنسية</th>
                     <th>رقم الهاتف</th>
-                    <th>المهنة</th>
                     <th>المؤهل</th>
                     <th>العنوان</th>
                     <th class='text-center'>العمليات</th>
@@ -139,7 +156,6 @@ class searchController extends Controller
                         <td>$row->name</td>
                         <td>$row->nationality</td>
                         <td>$row->phone</td>
-                        <td>$row->service_id</td>
                         <td>$row->edu_level</td>
                         <td>$row->address</td>
                         <td class='text-center'>
@@ -320,7 +336,6 @@ class searchController extends Controller
                     <th>إسم الكابتن</th>
                     <th>الجنسية</th>
                     <th>رقم الهاتف</th>
-                    <th>المهنة</th>
                     <th>المؤهل</th>
                     <th>العنوان</th>
                     <th class='text-center'>العمليات</th>
@@ -336,7 +351,6 @@ class searchController extends Controller
                         <td>$row->name</td>
                         <td>$row->nationality</td>
                         <td>$row->phone</td>
-                        <td>$row->service_id</td>
                         <td>$row->edu_level</td>
                         <td>$row->address</td>
                         <td class='text-center'>
